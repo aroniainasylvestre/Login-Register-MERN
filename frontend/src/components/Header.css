@@ -1,0 +1,26 @@
+.header {
+    width: 100%;
+    padding: 1rem 4rem;
+    position: fixed;
+}
+
+.header > .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header > .container > .title > a {
+    font-size: 2rem;
+    color: #fff;
+}
+
+.navbar > ul {
+    display: flex;
+    gap: 2rem;
+}
+
+.navbar > ul > li > a {
+    font-size: 1.2rem;
+    color: #fff;
+}

@@ -1,0 +1,17 @@
+.btn {
+    width: 150px;
+    height: 40px;
+    font-family: "Poppins";
+    font-size: 1rem;
+    font-weight: 400;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    background-color: rgb(202, 6, 45);
+    transition: all 1s;
+}
+
+.btn:hover {
+    cursor: pointer;
+    background-color: rgb(160, 7, 38);
+}
