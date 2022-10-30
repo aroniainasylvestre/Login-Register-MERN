@@ -12,10 +12,12 @@ const generateToken = (id) =>
  * @Access :            Public
  */
 const register = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
     try {
-        if (!name)
-            return res.status(400).json({ message: "Entrer your name." });
+        if (!firstName || !lastName)
+            return res
+                .status(400)
+                .json({ message: "Entrer your first Name and last Name." });
 
         if (!email)
             return res.status(400).json({ message: "Entrer your email." });
@@ -34,15 +36,18 @@ const register = async (req, res) => {
 
         // Create user
         const newUser = {
-            name,
+            firstName,
+            lastName,
             email,
             password: hashedPassword,
         };
         const user = await User.create(newUser);
         if (user) {
-            res.status(201).json({ message: "User registered successfully. Please Sign in now."});
+            res.status(201).json({
+                message: "User registered successfully. Please Sign in now.",
+            });
         } else {
-            res.status(400).json({ message: `Invalide user data`});
+            res.status(400).json({ message: `Invalide user data` });
         }
     } catch (error) {
         res.status(500).json({
@@ -65,7 +70,7 @@ const login = async (req, res) => {
 
         // Verify user password
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch){
+        if (!isMatch) {
             res.status(400).json({ message: "Incorrect Password." });
         }
 
@@ -75,7 +80,7 @@ const login = async (req, res) => {
         res.status(200).json({
             id: user._id,
             name: user.name,
-            token
+            token,
         });
     } catch (error) {
         res.status(500).json({
@@ -84,8 +89,23 @@ const login = async (req, res) => {
     }
 };
 
+const getUser = async (req, res) => {
+    const id = req.user._id;
+    try {
+        const user = await User.findOne({ _id: id });
+        if (!user) {
+            res.status(404).json({ message: "User not found." });
+        }
+        res.status(200).json({ user });
+    } catch (error) {
+        res.status(500).json({
+            message: "Something went wrong. Please try again.",
+        });
+    }
+};
 
 module.exports = {
     register,
     login,
+    getUser,
 };
