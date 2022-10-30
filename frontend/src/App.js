@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
+import ProtectedRoutes from "./utils/ProtectedRoutes";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -10,7 +11,10 @@ const App = () => {
         <div className="app">
             <Header />
             <Routes>
-                <Route path="/" element={<Home />}></Route>
+                <Route element={<ProtectedRoutes />}>
+                    <Route path="/" element={<Home />}></Route>
+                </Route>
+
                 <Route path="/login" element={<Login />}></Route>
                 <Route path="/register" element={<Register />}></Route>
             </Routes>

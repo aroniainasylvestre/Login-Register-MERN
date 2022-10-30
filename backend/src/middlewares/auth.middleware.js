@@ -2,25 +2,30 @@ const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 
 const auth = async (req, res, next) => {
-    const token = req.headers.authorization.split(" ")[1];
+    try {
+        const token = req.headers.authorization?.split(" ")[1];
+        if (token) {
+            // Verify token
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    if (token) {
-        // decode token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            // Get user from the token
+            req.user = await User.findById(decoded.id).select("-password");
 
-        // get user
-        const user = await User.findOne({ _id: decoded.id });
-
-        if (!user) {
-            res.status(401).json({ message: "Unauthorized." });
+            next();
+        } else {
+            return res.status(401).json({
+                message: "Uauthorized",
+            });
         }
-
-        // put user in the request
-        req.user = user;
-
-        next();
-    } else {
-        res.status(401).json({ message: "No token." });
+        if (!token) {
+            return res.status(401).json({
+                message: "No token, access denied.",
+            });
+        }
+    } catch (error) {
+        return res.status(400).json({
+            message: "Something went wrong.",
+        });
     }
 };
 

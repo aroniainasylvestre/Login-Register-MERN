@@ -10,13 +10,12 @@
     width: 40%;
     height: 510px;
     padding: 1rem 3rem;
-    background-color: #fff;
-    border-radius: 8px;
 }
 
-.register-container > P {
-    font-size: 1.4rem;
-    text-align: center;
+.register-container > span {
+    font-size: 2rem;
+    color: crimson;
+    margin-bottom: 1rem;
 }
 .register-container > div {
     display: flex;

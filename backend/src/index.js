@@ -13,11 +13,12 @@ const app = express();
 const URL = process.env.MONGO_URI;
 connectDB(URL);
 
-// Cors
-const corsOption = {
+const corsOptions = {
     origin: process.env.CLIENT_URL,
+    credential: true,
+    optionsSuccessStatus: 200,
 };
-app.use(cors(corsOption));
+app.use(cors(corsOptions));
 
 // Body parser
 app.use(express.json());

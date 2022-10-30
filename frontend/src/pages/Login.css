@@ -7,16 +7,15 @@
 }
 
 .login-container {
-    width: 40%;
+    width: 30%;
     height: 300px;
     padding: 1rem 3rem;
-    background-color: #fff;
-    border-radius: 8px;
 }
 
-.login-container > P {
-    font-size: 1.4rem;
-    text-align: center;
+.login-container > span {
+    font-size: 2rem;
+    color: crimson;
+    margin-bottom: 1rem;
 }
 
 .login-container > div {

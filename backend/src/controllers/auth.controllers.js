@@ -50,6 +50,7 @@ const register = async (req, res) => {
             res.status(400).json({ message: `Invalide user data` });
         }
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             message: "Something went wrong. Please try again.",
         });
@@ -64,27 +65,26 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     const { email, password } = req.body;
     try {
-        // find the user
+        // Check user email
         const user = await User.findOne({ email });
-        if (!user) res.status(404).json({ message: "User not found." });
+        if (!user) return res.status(404).json({ message: "User not found!" });
 
-        // Verify user password
+        //  Verify user password
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            res.status(400).json({ message: "Incorrect Password." });
-        }
+        if (!isMatch)
+            return res.status(404).json({ message: "Password was wrong!" });
 
-        // Generate Token
         const token = generateToken(user._id);
 
         res.status(200).json({
-            id: user._id,
-            name: user.name,
+            _id: user._id,
+            firstName: user.firstName,
             token,
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({
-            message: "Something went wrong. Please try again.",
+            message: "Something went wrong. Please try again",
         });
     }
 };
@@ -92,7 +92,7 @@ const login = async (req, res) => {
 const getUser = async (req, res) => {
     const id = req.user._id;
     try {
-        const user = await User.findOne({ _id: id });
+        const user = await User.findOne({ _id: id }).select("-password");
         if (!user) {
             res.status(404).json({ message: "User not found." });
         }

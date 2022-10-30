@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../features/authSlice";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import "./Login.css";
 
 const Login = () => {
-    const [formData, setFormData] = useState({
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [formData, setForm] = useState({
         email: "",
         password: "",
     });
@@ -30,7 +34,7 @@ const Login = () => {
     ];
 
     const handleChange = (e) => {
-        setFormData({
+        setForm({
             ...formData,
             [e.target.name]: [e.target.value],
         });
@@ -38,14 +42,19 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
+        const data = {
+            email: formData.email[0],
+            password: formData.password[0],
+        };
+        dispatch(login({ ...data }));
+        navigate("/");
     };
 
     return (
         <div className="login">
             <div className="login-container">
-                <p>Login</p>
-                <form onClick={handleSubmit}>
+                <span>Login</span>
+                <form onSubmit={handleSubmit}>
                     {inputs.map((item) => {
                         return (
                             <Input
